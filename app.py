@@ -75,13 +75,11 @@ def qa_innovation(query, context):
     For a Innovation here are the headers which should be answered in detail and pointwise if required. The headers are:
     Innovation model
     How it works
-    Benifits
+    Benefits
     Practical Implementation Steps
     Conclusion
 
-    The answer should be in markdown format.
-    
-    The answer should be in markdown format.
+    The essence of the biomimicry model should be present at every step of the answer to relate with the steps for solving the problem.
 
     **Answer:**
     """
@@ -126,11 +124,12 @@ def qa_strategy(query, context):
     For a strategy here are the headers which should be answered in detail and pointwise if required. The headers are:
     Inspiration model
     How it works
-    Benifits
+    Benefits
     Practical Implementation Steps
     Conclusion
 
-    The answer should be in markdown format.
+    The essence of the biomimicry model should be present at every step of the answer to relate with the steps for solving the problem.
+
 
     **Answer:**
     """
