@@ -3,7 +3,7 @@ from langchain_cohere import CohereEmbeddings
 from langchain_community.vectorstores import Qdrant
 from langchain_groq import ChatGroq
 from qdrant_client import QdrantClient
-from IPython.display import Markdown
+
 
 
 
