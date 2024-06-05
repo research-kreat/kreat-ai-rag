@@ -194,18 +194,14 @@ def search_query(query):
     if response.status_code == 200:
         # Print the response content
         data = response.json()
-        print(response.json())
-         # Print the answer
-        print("Answer:", data["answer"])
+        
+        # Print the answer
+        st.write("Answer:", data["answer"])
         
         # Print top 3 titles with their URLs
-        print("\nTop 3 Titles:")
+        st.write("\nTop 3 Titles:")
         for result in data["results"][:3]:
-            print(f"- {result['title']}: {result['url']}")
-
-    else:
-        # Print an error message if the request failed
-        print(f"Error: {response.status_code} - {response.text}")
+            st.write(f"- {result['title']}: {result['url']}")
 
 
 
@@ -288,7 +284,7 @@ def main():
         # Display response in markdown format
         st.markdown(response)
 
-    # Add button to discover strategies
+    # Add button to discover patents
     if st.sidebar.button("Discover Patents",key='pt'):
         # Call qa function with the query and context
         # Replace query and context with appropriate values
@@ -296,7 +292,7 @@ def main():
         found_docs = patents.similarity_search(query, k=5)
         display_patents(found_docs)
 
-    # Add button to discover strategies
+    # Add button to discover journals
     if st.sidebar.button("Discover Journals",key='jr'):
         # Call qa function with the query and context
         # Replace query and context with appropriate values
@@ -306,7 +302,7 @@ def main():
 
     
     
-    # Add button to discover strategies
+    # Add button to discover search agents
     if st.sidebar.button("See latest",key='srch'):
         # Call qa function with the query and context
         # Replace query and context with appropriate values
