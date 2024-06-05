@@ -199,11 +199,27 @@ def main():
         # Call qa function with the query and context
         # Replace query and context with appropriate values
         query = f"Domain: {domain}, Sub-Domain: {sub_domain}, Title: {title}"
-        found_docs = innovations.similarity_search(query, k=5)
-        context = found_docs[current_index].metadata['content']
+        found_docs = innovations.similarity_search(query, k=3)
+        
+        st.markdown("## Innovation 1")
+        context = found_docs[0].metadata['content']
         response = qa_innovation(query, context)
         # Display response in markdown format
         st.markdown(response)
+
+        st.markdown("## Innovation 2")
+        context = found_docs[1].metadata['content']
+        response = qa_innovation(query, context)
+        # Display response in markdown format
+        st.markdown(response)
+
+        st.markdown("## Innovation 3")
+        context = found_docs[2].metadata['content']
+        response = qa_innovation(query, context)
+        # Display response in markdown format
+        st.markdown(response)
+
+
 
     # Add button to discover strategies
     if st.sidebar.button("Discover Strategy",key='str'):
@@ -211,11 +227,24 @@ def main():
         # Replace query and context with appropriate values
         query = f"Domain: {domain}, Sub-Domain: {sub_domain}, Title: {title}"
         found_docs = strategies.similarity_search(query, k=5)
-        context = found_docs[current_index].metadata['content']
+        
+        st.markdown("## Strategy 1")
+        context = found_docs[0].metadata['content']
         response = qa_strategy(query, context)
         # Display response in markdown format
         st.markdown(response)
 
+        st.markdown("## Strategy 2")
+        context = found_docs[0].metadata['content']
+        response = qa_strategy(query, context)
+        # Display response in markdown format
+        st.markdown(response)
+
+        st.markdown("## Strategy 3")
+        context = found_docs[0].metadata['content']
+        response = qa_strategy(query, context)
+        # Display response in markdown format
+        st.markdown(response)
 
     # Add button to discover strategies
     if st.sidebar.button("Discover Patents",key='pt'):
