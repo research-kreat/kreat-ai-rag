@@ -304,6 +304,8 @@ def main():
         found_docs = journals.similarity_search(query, k=5)
         display_journals(found_docs)
 
+    
+    
     # Add button to discover strategies
     if st.sidebar.button("See latest",key='srch'):
         # Call qa function with the query and context
