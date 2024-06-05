@@ -154,7 +154,7 @@ def main():
     st.title("Kreat.AI RAG test")
 
     #Sidebar Logo
-    st.sidebar.image("Logo.png")
+    st.sidebar.image("logo.png")
 
 
     st.sidebar.title("Input Data")
