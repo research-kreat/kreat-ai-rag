@@ -235,13 +235,13 @@ def main():
         st.markdown(response)
 
         st.markdown("## Strategy 2")
-        context = found_docs[0].metadata['content']
+        context = found_docs[1].metadata['content']
         response = qa_strategy(query, context)
         # Display response in markdown format
         st.markdown(response)
 
         st.markdown("## Strategy 3")
-        context = found_docs[0].metadata['content']
+        context = found_docs[2].metadata['content']
         response = qa_strategy(query, context)
         # Display response in markdown format
         st.markdown(response)
