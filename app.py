@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 from langchain_cohere import CohereEmbeddings
 from langchain_community.vectorstores import Qdrant
 from langchain_groq import ChatGroq
@@ -166,6 +167,47 @@ def display_journals(found_docs):
         st.write(f"**Summary:** {doc.metadata['summary']}")
         st.write("---")
 
+def search_query(query):
+    # Base URL for the API
+    base_url = "https://api.tavily.com/"
+
+    # Endpoint for the search
+    endpoint = "search"
+
+    # Request payload
+    payload = {
+        "api_key": "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",
+        "query": query,
+        "search_depth": "basic",
+        "include_answer": True,
+        "include_images": False,
+        "include_raw_content": False,
+        "max_results": 3,
+        "include_domains": [],
+        "exclude_domains": []
+    }
+
+    # Make the POST request
+    response = requests.post(f"{base_url}{endpoint}", json=payload)
+
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        # Print the response content
+        data = response.json()
+        print(response.json())
+         # Print the answer
+        print("Answer:", data["answer"])
+        
+        # Print top 3 titles with their URLs
+        print("\nTop 3 Titles:")
+        for result in data["results"][:3]:
+            print(f"- {result['title']}: {result['url']}")
+
+    else:
+        # Print an error message if the request failed
+        print(f"Error: {response.status_code} - {response.text}")
+
+
 
 def main():
 
@@ -261,6 +303,13 @@ def main():
         query = f"Domain: {domain}, Sub-Domain: {sub_domain}, Title: {title}"
         found_docs = journals.similarity_search(query, k=5)
         display_journals(found_docs)
+
+    # Add button to discover strategies
+    if st.sidebar.button("See latest",key='srch'):
+        # Call qa function with the query and context
+        # Replace query and context with appropriate values
+        query = f"Give me latest trends for a problem having Domain: {domain}, Sub-Domain: {sub_domain} and Problem Title: {title}"
+        search_query(query)
 
 
 if __name__ == "__main__":
