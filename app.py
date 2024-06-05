@@ -70,7 +70,18 @@ def qa_innovation(query, context):
     
     Extract key information from the context to address the query effectively. Aim for conciseness while ensuring all relevant aspects are covered.
     
-    If the innovation is described, provide an extremely detailed description with all relevant points included. The answer should be in markdown format.
+    If the innovation is described, provide an extremely detailed description with all relevant points included. 
+    
+    For a Innovation here are the headers which should be answered in detail and pointwise if required. The headers are:
+    Innovation model
+    How it works
+    Benifits
+    Practical Implementation Steps
+    Conclusion
+
+    The answer should be in markdown format.
+    
+    The answer should be in markdown format.
 
     **Answer:**
     """
@@ -110,7 +121,16 @@ def qa_strategy(query, context):
 
     Craft a comprehensive response, incorporating key elements from the context to address the query effectively. Aim for conciseness while ensuring all relevant aspects are covered.
      
-    If a strategy is described, provide an extremely detailed description with all pertinent points included. The answer should be in markdown format.
+    If a strategy is described, provide an extremely detailed description with all pertinent points included.
+    
+    For a strategy here are the headers which should be answered in detail and pointwise if required. The headers are:
+    Inspiration model
+    How it works
+    Benifits
+    Practical Implementation Steps
+    Conclusion
+
+    The answer should be in markdown format.
 
     **Answer:**
     """
