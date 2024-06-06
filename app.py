@@ -63,24 +63,14 @@ def qa_innovation(query, context):
 
     **Task:** 
 
-    The innovator seeks biomimicry innovation insights based on their query. Understand the intent behind the query to provide a tailored response.
-    
-    Using the provided context about a similar biomimicry innovation, answer the innovator's query in detail. Focus on extracting all relevant information from the context to address the query. If the context is not relevant to the query, kindly state that no related innovation is available.
-    
-    Directly get into the answer without writing much detail into what the query was or mentioning any context given to you. Ensure a comprehensive response, including all pertinent details from the context.
-    
-    Extract key information from the context to address the query effectively. Aim for conciseness while ensuring all relevant aspects are covered.
-    
-    If the innovation is described, provide an extremely detailed description with all relevant points included. 
-    
-    For a Innovation here are the headers which should be answered in detail and pointwise if required. The headers are:
-    Innovation model
-    How it works
-    Benefits
-    Practical Implementation Steps
-    Conclusion
+    Using the query provided just summarize the context. 
 
-    The essence of the biomimicry model should be present at every step of the answer to relate with the steps for solving the problem.
+    If the context is not not related to the query then say you dont know the answer.
+
+    In any case do not use any knowledge of your own.
+
+    
+    If the context matches the query and you are summarizing then I want you summarize in detail, include all the points in the context.
 
     **Answer:**
     """
@@ -112,25 +102,13 @@ def qa_strategy(query, context):
 
     **Task:** 
 
-    The innovator seeks biomimicry strategy insights based on their query. Understand the intent behind the query to provide a tailored response.
-    
-    Using the provided context about a similar biomimicry strategy, provide detailed insights to address the innovator's query. Focus on extracting all relevant information from the context. If the context is not relevant to the query, kindly state that no related strategy is available.
-    
-    Directly get into the answer without writing much detail into what the query was or mentioning any context given to you. Ensure a comprehensive response, including all pertinent details from the context.
+    Using the query provided just summarize the context. 
 
-    Craft a comprehensive response, incorporating key elements from the context to address the query effectively. Aim for conciseness while ensuring all relevant aspects are covered.
-     
-    If a strategy is described, provide an extremely detailed description with all pertinent points included.
-    
-    For a strategy here are the headers which should be answered in detail and pointwise if required. The headers are:
-    Inspiration model
-    How it works
-    Benefits
-    Practical Implementation Steps
-    Conclusion
+    If the context is not not related to the query then say you dont know the answer.
 
-    The essence of the biomimicry model should be present at every step of the answer to relate with the steps for solving the problem.
+    If the context matches the query and you are summarizing then I want you summarize in detail, include all the points in the context.
 
+    In any case do not use any knowledge of your own.
 
     **Answer:**
     """
@@ -234,8 +212,6 @@ def main():
         
     # Add button to discover innovations
     if st.sidebar.button("Discover Innovation",key = 'iv'):
-        # Call qa function with the query and context
-        # Replace query and context with appropriate values
         query = f"Domain: {domain}, Sub-Domain: {sub_domain}, Title: {title}"
         found_docs = innovations.similarity_search(query, k=3)
         
@@ -244,25 +220,19 @@ def main():
         response = qa_innovation(query, context)
         # Display response in markdown format
         st.markdown(response)
+        st.markdown("Reference: "+found_docs[0].metadata['Links'])
 
-        st.markdown("## Innovation 2")
-        context = found_docs[1].metadata['content']
-        response = qa_innovation(query, context)
-        # Display response in markdown format
-        st.markdown(response)
-
-        st.markdown("## Innovation 3")
-        context = found_docs[2].metadata['content']
-        response = qa_innovation(query, context)
-        # Display response in markdown format
-        st.markdown(response)
+        prompt = f'''
+                Give me some Biomimcry innovations regarding this query: {query}
+                '''
+        genai = llm.invoke(prompt)
+        st.markdown("## Genai Innovations")
+        st.write(genai.content)
 
 
 
     # Add button to discover strategies
     if st.sidebar.button("Discover Strategy",key='str'):
-        # Call qa function with the query and context
-        # Replace query and context with appropriate values
         query = f"Domain: {domain}, Sub-Domain: {sub_domain}, Title: {title}"
         found_docs = strategies.similarity_search(query, k=5)
         
@@ -271,19 +241,15 @@ def main():
         response = qa_strategy(query, context)
         # Display response in markdown format
         st.markdown(response)
+        st.write("Reference: "+found_docs[0].metadata['Reference'])
+        prompt = f'''
+                Give me some Biomimcry strategies regarding this query: {query}
+                '''
+        genai = llm.invoke(prompt)
+        st.markdown("## Genai Strategies")
+        st.write(genai.content)
 
-        st.markdown("## Strategy 2")
-        context = found_docs[1].metadata['content']
-        response = qa_strategy(query, context)
-        # Display response in markdown format
-        st.markdown(response)
-
-        st.markdown("## Strategy 3")
-        context = found_docs[2].metadata['content']
-        response = qa_strategy(query, context)
-        # Display response in markdown format
-        st.markdown(response)
-
+        
     # Add button to discover patents
     if st.sidebar.button("Discover Patents",key='pt'):
         # Call qa function with the query and context
