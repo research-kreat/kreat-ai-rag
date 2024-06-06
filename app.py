@@ -107,7 +107,7 @@ def qa_strategy(query, context):
     If the context is not not related to the query then say you dont know the answer.
 
     If the context matches the query and you are summarizing then I want you summarize in detail, include all the points in the context.
-
+    
     In any case do not use any knowledge of your own.
 
     **Answer:**
@@ -129,6 +129,7 @@ def display_patents(found_docs):
         st.write(f"**Assignee Organization:** {doc.metadata['assignee_org']}")
         st.write(f"**Inventors:** {doc.metadata['inventors']}")
         st.write(f"**IPC:** {doc.metadata['ipc']}")
+        st.write("Document id: "+doc.metadata['_id'])
         st.write("---")
 
 def display_journals(found_docs):
@@ -143,6 +144,7 @@ def display_journals(found_docs):
         st.write(f"**Year:** {doc.metadata['year']}")
         st.write(f"**Updated:** {doc.metadata['updated']}")
         st.write(f"**Summary:** {doc.metadata['summary']}")
+        st.write("Document id: "+doc.metadata['_id'])
         st.write("---")
 
 def search_query(query):
@@ -221,6 +223,7 @@ def main():
         # Display response in markdown format
         st.markdown(response)
         st.markdown("Reference: "+found_docs[0].metadata['Links'])
+        st.write("Document id: "+found_docs[0].metadata['_id'])
 
         prompt = f'''
                 Give me some Biomimcry innovations regarding this query: {query}
@@ -242,6 +245,8 @@ def main():
         # Display response in markdown format
         st.markdown(response)
         st.write("Reference: "+found_docs[0].metadata['Reference'])
+        st.write("Document id: "+found_docs[0].metadata['_id'])
+
         prompt = f'''
                 Give me some Biomimcry strategies regarding this query: {query}
                 '''
