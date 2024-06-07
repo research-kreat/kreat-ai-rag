@@ -192,7 +192,7 @@ def qa_strategy(query, context):
 
 def display_patents(found_docs):
     st.title("List of Patents")
-    for idx, doc in enumerate(found_docs):
+    for idx, (doc, score) in enumerate(found_docs):
         st.markdown(f"## Patent {idx + 1}")
         st.write(f"**Title:** {doc.metadata['patent_title']}")
         st.write(f"**Type:** {doc.metadata['patent_type']}")
@@ -203,12 +203,13 @@ def display_patents(found_docs):
         st.write(f"**Assignee Organization:** {doc.metadata['assignee_org']}")
         st.write(f"**Inventors:** {doc.metadata['inventors']}")
         st.write(f"**IPC:** {doc.metadata['ipc']}")
-        st.write("Document id: "+doc.metadata['_id'])
+        st.write("Document id: " + doc.metadata['_id'])
+        st.write(f"**Score:** {score}")
         st.write("---")
 
 def display_journals(found_docs):
     st.title("List of Journals")
-    for idx, doc in enumerate(found_docs):
+    for idx, (doc,score) in enumerate(found_docs):
         st.markdown(f"## Journal {idx + 1}")
         st.write(f"**Title:** {doc.page_content}")
         st.write(f"**Journal Name:** {doc.metadata['journal_name']}")
@@ -219,6 +220,7 @@ def display_journals(found_docs):
         st.write(f"**Updated:** {doc.metadata['updated']}")
         st.write(f"**Summary:** {doc.metadata['summary']}")
         st.write("Document id: "+doc.metadata['_id'])
+        st.write(f"**Score:** {score}")
         st.write("---")
 
 def search_query(query):
@@ -354,7 +356,7 @@ def main():
         # Call qa function with the query and context
         # Replace query and context with appropriate values
         query = f"Domain: {domain}, Sub-Domain: {sub_domain}, Title: {title}"
-        found_docs = patents.similarity_search(query, k=5)
+        found_docs = patents.similarity_search_with_score(query, k=5)
         display_patents(found_docs)
 
     # Add button to discover journals
@@ -362,7 +364,7 @@ def main():
         # Call qa function with the query and context
         # Replace query and context with appropriate values
         query = f"Domain: {domain}, Sub-Domain: {sub_domain}, Title: {title}"
-        found_docs = journals.similarity_search(query, k=5)
+        found_docs = journals.similarity_search_with_score(query, k=5)
         display_journals(found_docs)
 
     
