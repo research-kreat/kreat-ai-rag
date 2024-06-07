@@ -79,6 +79,82 @@ def qa_innovation(query, context):
     return response.content
 
 
+def qa_genai_innovation(query, context):
+    """
+    This function sends a query and context to an LLM for biomimicry innovation insights.
+
+    Args:
+        query: The innovator's query about their innovation.
+        context: The metadata content (string) from a similar biomimicry innovation.
+
+    Returns:
+        A string containing the LLM's response in markdown format.
+    """
+    prompt = f"""
+    ## Biomimicry Innovation Insights
+
+    **Query:** {query}
+
+    **Context:**
+
+    {context}
+
+    **Task:** 
+
+    The innovator seeks biomimicry innovation insights based on their query. Understand the intent behind the query to provide a tailored response.
+    
+    Using the provided context about a similar biomimicry innovation, answer the innovator's query in detail. Focus on extracting all relevant information from the context to address the query. If the context is not relevant to the query, kindly state that no related innovation is available.
+    
+    Directly get into the answer without writing much detail into what the query was or mentioning any context given to you. Ensure a comprehensive response, including all pertinent details from the context.
+    
+    Extract key information from the context to address the query effectively. Aim for conciseness while ensuring all relevant aspects are covered.
+    
+    If the innovation is described, provide an extremely detailed description with all relevant points included. 
+
+    **Answer:**
+    """
+
+    response = llm.invoke(prompt)
+    return response.content
+
+
+def qa_genai_strategy(query, context):
+    """
+    This function sends a query and context to an LLM for biomimicry strategy insights.
+
+    Args:
+        query: The innovator's query about their biomimicry strategy.
+        context: The metadata content (string) from a similar biomimicry strategy.
+
+    Returns:
+        A string containing the LLM's response in markdown format.
+    """
+    prompt = f"""
+    ## Biomimicry Strategy Insights
+
+    **Query:** {query}
+
+    **Context:**
+
+    {context}
+
+    **Task:** 
+
+    The innovator seeks biomimicry strategy insights based on their query. Understand the intent behind the query to provide a tailored response.
+    
+    Using the provided context about a similar biomimicry strategy, provide detailed insights to address the innovator's query. Focus on extracting all relevant information from the context. If the context is not relevant to the query, kindly state that no related strategy is available.
+    
+    Craft a comprehensive response, incorporating key elements from the context to address the query effectively. Aim for conciseness while ensuring all relevant aspects are covered.
+    
+    If a strategy is described, provide an extremely detailed description with all pertinent points included. 
+
+    **Answer:**
+    """
+
+    response = llm.invoke(prompt)
+    return response.content
+
+
 
 def qa_strategy(query, context):
     """
@@ -102,9 +178,7 @@ def qa_strategy(query, context):
 
     **Task:** 
 
-    Using the query provided just summarize the context. 
-
-    If the context is not not related to the query then say you dont know the answer.
+    If the context is not not related to the query then say "I don't have an answer to that.", Nothing else.
 
     If the context matches the query and you are summarizing then I want you summarize in detail, include all the points in the context.
     
@@ -215,21 +289,31 @@ def main():
     # Add button to discover innovations
     if st.sidebar.button("Discover Innovation",key = 'iv'):
         query = f"Domain: {domain}, Sub-Domain: {sub_domain}, Title: {title}"
-        found_docs = innovations.similarity_search(query, k=3)
-        
-        st.markdown("## Innovation 1")
-        context = found_docs[0].metadata['content']
+        found_docs = innovations.similarity_search_with_score(query, k=3)
+        doc,score = found_docs[0]
+        context = doc.metadata['content']
+
+        st.markdown("## Innovation from our doc")
         response = qa_innovation(query, context)
         # Display response in markdown format
         st.markdown(response)
-        st.markdown("Reference: "+found_docs[0].metadata['Links'])
-        st.write("Document id: "+found_docs[0].metadata['_id'])
+        st.markdown("Reference: "+doc.metadata['Links'])
+        st.write("Document id: "+doc.metadata['_id'])
+        st.write("Score: "+str(score))
+
+        st.markdown("## Innovation from our doc + Gen AI")
+        response = qa_genai_innovation(query, context)
+        # Display response in markdown format
+        st.markdown(response)
+        st.markdown("Reference: "+doc.metadata['Links'])
+        st.write("Document id: "+doc.metadata['_id'])
+        st.write("Score: "+str(score))
 
         prompt = f'''
                 Give me some Biomimcry innovations regarding this query: {query}
                 '''
         genai = llm.invoke(prompt)
-        st.markdown("## Genai Innovations")
+        st.markdown("## Innovation from Gen AI")
         st.write(genai.content)
 
 
@@ -237,15 +321,25 @@ def main():
     # Add button to discover strategies
     if st.sidebar.button("Discover Strategy",key='str'):
         query = f"Domain: {domain}, Sub-Domain: {sub_domain}, Title: {title}"
-        found_docs = strategies.similarity_search(query, k=5)
-        
-        st.markdown("## Strategy 1")
-        context = found_docs[0].metadata['content']
+        found_docs = strategies.similarity_search_with_score(query, k=5)
+        doc,score = found_docs[0]
+        context = doc.metadata['content']
         response = qa_strategy(query, context)
+        
+        st.markdown("## Strategy from our doc")
         # Display response in markdown format
         st.markdown(response)
-        st.write("Reference: "+found_docs[0].metadata['Reference'])
-        st.write("Document id: "+found_docs[0].metadata['_id'])
+        st.write("Reference: "+doc.metadata['Reference'])
+        st.write("Document id: "+doc.metadata['_id'])
+        st.write("Score: "+ str(score))
+
+        st.markdown("## Strategy from our doc + Gen AI")
+        response = qa_genai_innovation(query, context)
+        # Display response in markdown format
+        st.markdown(response)
+        st.markdown("Reference: "+doc.metadata['Reference'])
+        st.write("Document id: "+doc.metadata['_id'])
+        st.write("Score: "+ str(score))
 
         prompt = f'''
                 Give me some Biomimcry strategies regarding this query: {query}
