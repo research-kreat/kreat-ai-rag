@@ -9,7 +9,7 @@ from qdrant_client import QdrantClient
 
 
 embeddings = CohereEmbeddings(model="embed-english-light-v3.0",cohere_api_key="HgZpQb9mGtu3BmkG9AtMQVhT9kRW9VHSqSXk2kqP")
-llm = ChatGroq(temperature=0.5, groq_api_key="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", model_name="llama3-70b-8192")
+llm = ChatGroq(temperature=0.5, groq_api_key="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", model_name="llama3-70b-8192")
 
 qdrant_client = QdrantClient(
     url="https://f4bf0d03-f13c-43b6-87cc-32935393ab68.us-east4-0.gcp.cloud.qdrant.io:6333",
