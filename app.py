@@ -257,7 +257,7 @@ def search_query(query):
         # Print top 3 titles with their URLs
         st.write("\nTop 3 Titles:")
         for result in data["results"][:3]:
-            st.write(f"- {result['title']}: {result['url']}")
+            st.write(f"- {result['title']}: {result['url']}\n Content: {result['content']}")
 
 
 
